@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+    <head>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    </head>
+
+    <div class="container-xxl mt-4">
+
+        <div class="card mx-auto mb-4" style="width: 80%; background-color: rgba(255,255,255,0.95);">
+            <div th:if="${mensaje}"
+                 th:class="${'alert alert-' + (tipo == 'success' ? 'success' : 'danger') + ' alert-dismissible fade show'}"
+                 role="alert">
+                <strong th:text="${tipo == 'success' ? 'Éxito:' : 'Error:'}"></strong>
+                <span th:text="${mensaje}"></span>
+                <button type="button" class="btn-close" data-mdb-dismiss="alert"></button>
+            </div>
+
+            <div class="card-body">
+                <div class="alert text-center text-dark">
+                    <h4><strong>¡BIENVENIDO!</strong></h4>
+                    <p>Has ingresado al sistema correctamente</p>
+                    <p>Selecciona la acción que deseas realizar</p>
+                    <hr>
+                    <p>
+                        <strong>Usuario:</strong> <span th:text="${usuario.nombre}">Usuario</span> |
+                        <strong>Cuenta:</strong> <span th:text="${usuario.cuenta}">0000</span> |
+                        <strong>Saldo:</strong> $<span th:text="${usuario.saldo}">15000</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-4 mb-4">
+                <div class="card text-center">
+                    <div class="card-header fw-bold text-white" style="background-color:#005EB8;">
+                        RETIRO
+                    </div>
+                    <div class="card-body">
+                        <p class="fs-6">Retirar efectivo del cajero</p>
+                        <a th:href="@{/usuario/retiro}"
+                           class="btn btn-outline-secondary">
+                            Retirar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4" th:if="${usuario.rol != null && usuario.rol.idRol == 1}">
+                <div class="card text-center">
+                    <div class="card-header fw-bold text-white" style="background-color:#AF9800;">
+                        RELLENAR
+                    </div>
+                    <div class="card-body">
+                        <p class="fs-6">Rellenar cajero (Admin)</p>
+                        <a th:href="@{/usuario/rellenar}"
+                           class="btn btn-outline-warning">
+                            Rellenar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card text-center">
+                    <div class="card-header fw-bold text-white" style="background-color:#DC3545;">
+                        SALIR
+                    </div>
+                    <div class="card-body">
+                        <p class="fs-6">Cerrar sesión</p>
+                        <a th:href="@{/logout}"
+                           class="btn btn-outline-danger">
+                            Salir
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.js"></script>
+</html>
