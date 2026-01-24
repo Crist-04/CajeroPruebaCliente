@@ -34,10 +34,6 @@ public class LoginController {
             HttpSession session,
             Model model) {
 
-        System.out.println("=== LOGINCONTROLLER ===");
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
-
         Result result = usuarioService.login(username, password);
 
         System.out.println("Result correct: " + result.correct);

@@ -45,7 +45,7 @@ public class CajeroController {
         model.addAttribute("cajeros", cajeros);
         model.addAttribute("denominaciones", denominaciones);
 
-        return "usuario/Rellenar";
+        return "Rellenar";
     }
 
     @PostMapping("")
@@ -81,6 +81,6 @@ public class CajeroController {
         model.addAttribute("cajeros", cajeros);
         model.addAttribute("denominaciones", denominaciones);
 
-        return "usuario/Rellenar";
+        return "Rellenar";
     }
 }
