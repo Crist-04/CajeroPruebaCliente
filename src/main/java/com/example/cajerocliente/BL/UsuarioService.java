@@ -21,19 +21,15 @@ public class UsuarioService {
             
             RestTemplate restTemplate = new RestTemplate();
             
-            // Crear headers
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
             
-            // Crear body con los parámetros
             MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
             body.add("username", username);
             body.add("password", password);
             
-            // Crear la petición con headers y body
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
             
-            // Hacer POST
             ResponseEntity<Result> response = restTemplate.postForEntity(url, request, Result.class);
             
             if (response.getBody() != null && response.getBody().correct) {
