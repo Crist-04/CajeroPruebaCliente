@@ -16,8 +16,11 @@
                     LOGIN CAJERO
                 </div>
                 <div class="card-body">
+                    
+                    <div th:if="${mensaje}" class="alert alert-success text-center">
+                        <span th:text="${mensaje}"></span>
+                    </div>
 
-                    <!-- MENSAJE DE ERROR -->
                     <div th:if="${error}" class="alert alert-danger text-center">
                         <span th:text="${error}"></span>
                     </div>

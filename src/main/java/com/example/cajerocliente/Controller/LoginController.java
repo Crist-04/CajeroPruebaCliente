@@ -27,10 +27,15 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String login(HttpSession session) {
+    public String login(HttpSession session, @RequestParam(required = false) String logout, Model model) {
         if (session.getAttribute("usuario") != null) {
             return "redirect:/usuario";
         }
+
+        if (logout != null) {
+            model.addAttribute("mensaje", "Sesion Cerrada Exitosamente");
+        }
+
         return "LoginCajero";
     }
 
@@ -41,9 +46,6 @@ public class LoginController {
             Model model) {
 
         LoginResponse response = loginService.login(username, password);
-
-        System.out.println("---- Login Controller -----");
-        System.out.println("Response null? " + (response == null));
 
         if (response != null && response.isCorrect()) {
 
@@ -75,7 +77,7 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpSession session, Model model) {
         session.invalidate();
-        model.addAttribute("mensaje", "Sesión cerrada exitosamente");
-        return "redirect:/login";
+
+        return "redirect:/login?logout=true";
     }
 }
