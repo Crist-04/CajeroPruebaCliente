@@ -16,9 +16,11 @@
                     LOGIN CAJERO
                 </div>
                 <div class="card-body">
-                    
-                    <div th:if="${mensaje}" class="alert alert-success text-center">
+
+                    <div th:if="${mensaje}" class="alert alert-success text-center alert-link me-1" id="alertExample">
+                        <i class="fas fa-check me-2"></i>
                         <span th:text="${mensaje}"></span>
+                        <button type="button" class="btn-close ms-2" data-mdb-dismiss="alert" aria-label="Close"></button>
                     </div>
 
                     <div th:if="${error}" class="alert alert-danger text-center">
@@ -44,6 +46,20 @@
                 </div>
             </div>
         </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.js"></script>
+
+        <script>
+            mdb.Alert.getInstance(document.getElementById("alertExample")).update({
+                position: "top-right",
+                delay: 2000,
+                autohide: true,
+                width: "600px",
+                offset: 20,
+                stacking: false,
+                appendToBody: false,
+            });
+        </script>
 
     </body>
 </html>

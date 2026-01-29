@@ -21,7 +21,7 @@
 
     <body>
         <!-- NAVBAR -->
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#7bd1ff;">
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#7bd1ff;">
             <div class="container-fluid">
                 <a class="navbar-brand fw-bold" th:href="@{/usuario}">Banco</a>
 
@@ -38,7 +38,7 @@
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/usuario/retiro}">Retiro</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" th:if="${session.usuario != null && session.usuario.rol != null && session.usuario.rol.idRol == 1}">
                             <a class="nav-link" th:href="@{/usuario/rellenar}">Rellenar</a>
                         </li>
                     </ul>
