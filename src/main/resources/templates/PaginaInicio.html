@@ -2,81 +2,418 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
-    
+
     <div layout:fragment="content">
-        <div class="container-xxl mt-4">
+        <style>
+            .hero-section {
+                padding: 60px 20px 40px;
+                position: relative;
+            }
 
-            <div class="card mx-auto mb-4" style="width: 80%; background-color: rgba(255,255,255,0.95);">
-                <div th:if="${mensaje}"
-                     th:class="${'alert alert-' + (tipo == 'success' ? 'success' : 'danger') + ' alert-dismissible fade show'}"
-                     role="alert">
-                    <strong th:text="${tipo == 'success' ? 'Éxito:' : 'Error:'}"></strong>
-                    <span th:text="${mensaje}"></span>
-                    <button type="button" class="btn-close" data-mdb-dismiss="alert"></button>
-                </div>
+            .hero-section::before {
+                content: '';
+                position: absolute;
+                width: 400px;
+                height: 400px;
+                background: radial-gradient(circle, rgba(0, 212, 255, 0.08) 0%, transparent 70%);
+                border-radius: 50%;
+                top: -100px;
+                right: -100px;
+                animation: float 8s ease-in-out infinite;
+            }
 
-                <div class="card-body">
-                    <div class="alert text-center text-dark">
-                        <h4><strong>¡BIENVENIDO!</strong></h4>
-                        <p>Has ingresado al sistema correctamente</p>
-                        <p>Selecciona la acción que deseas realizar</p>
-                        <hr>
-                        <p>
-                            <strong>Usuario:</strong> <span th:text="${usuario.nombre}">Usuario</span> |
-                            <strong>Cuenta:</strong> <span th:text="${usuario.cuenta}">0000</span> |
-                            <strong>Saldo:</strong> $<span th:text="${usuario.saldo}">15000</span>
-                        </p>
+            @keyframes float {
+                0%, 100% {
+                    transform: translate(0, 0);
+                }
+                50% {
+                    transform: translate(30px, 30px);
+                }
+            }
+
+            .user-card {
+                background: linear-gradient(135deg, rgba(57, 57, 57, 0.85), rgba(39, 39, 39, 0.85));
+                backdrop-filter: blur(150px);
+                border-radius: 20px;
+                padding: 40px;
+                max-width: 800px;
+                margin: 0 auto 50px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                position: relative;
+                overflow: hidden;
+                animation: slideDown 0.6s ease-out;
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .user-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, #00D4FF 0%, #00FF88 100%);
+            }
+
+            .user-card h4 {
+                color: white;
+                font-weight: 700;
+                font-size: 28px;
+                margin-bottom: 15px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+            }
+
+            .user-card p {
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            .user-info {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 30px;
+                margin-top: 25px;
+                padding-top: 25px;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .user-info-item {
+                flex: 1;
+                min-width: 150px;
+            }
+
+            .user-info-item strong {
+                display: block;
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 8px;
+            }
+
+            .user-info-item span {
+                color: white;
+                font-size: 20px;
+                font-weight: 600;
+            }
+
+            .action-cards-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 30px;
+                padding: 0 20px 60px;
+            }
+
+            .action-card {
+                position: relative;
+                width: 100%;
+                max-width: 380px;
+                min-height: 320px;
+                border-radius: 20px;
+                background: linear-gradient(135deg, rgba(57, 57, 57, 0.85), rgba(39, 39, 39, 0.85));
+                backdrop-filter: blur(150px);
+                padding: 40px;
+                transition: all 0.4s ease;
+                cursor: pointer;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+                overflow: visible;
+                animation: fadeInUp 0.6s ease-out backwards;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .action-card:nth-child(1) {
+                animation-delay: 0.1s;
+            }
+            .action-card:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+            .action-card:nth-child(3) {
+                animation-delay: 0.3s;
+            }
+
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .action-card::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                right: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+                opacity: 0;
+                transition: opacity 0.4s ease;
+            }
+
+            .action-card:hover::before {
+                opacity: 1;
+            }
+
+            .action-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            }
+
+            .action-card.retiro::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, #00D4FF 0%, #0099FF 100%);
+            }
+
+            .action-card.rellenar::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, #FFD700 0%, #FFA500 100%);
+            }
+
+            .action-card.salir::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, #FF6B6B 0%, #FF4444 100%);
+            }
+
+            .action-card-icon {
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 20px;
+                font-size: 32px;
+                position: relative;
+                z-index: 2;
+            }
+
+            .action-card.retiro .action-card-icon {
+                background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 153, 255, 0.2));
+                color: #00D4FF;
+            }
+
+            .action-card.rellenar .action-card-icon {
+                background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2));
+                color: #FFD700;
+            }
+
+            .action-card.salir .action-card-icon {
+                background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 68, 68, 0.2));
+                color: #FF6B6B;
+            }
+
+            .action-card-title {
+                color: white;
+                font-size: 24px;
+                font-weight: 700;
+                margin-bottom: 15px;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                position: relative;
+                z-index: 2;
+            }
+
+            .action-card-description {
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 14px;
+                margin-bottom: 20px;
+                line-height: 1.6;
+                position: relative;
+                z-index: 2;
+                flex-grow: 1;
+            }
+
+            .action-card-button {
+                display: inline-block;
+                padding: 12px 30px;
+                border-radius: 10px;
+                font-weight: 600;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                border: 2px solid;
+                position: relative;
+                z-index: 2;
+                margin-top: auto;
+                width: fit-content;
+            }
+
+            .action-card.retiro .action-card-button {
+                color: #00D4FF;
+                border-color: #00D4FF;
+            }
+
+            .action-card.retiro .action-card-button:hover {
+                background: #00D4FF;
+                color: #0F2027;
+                box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+            }
+
+            .action-card.rellenar .action-card-button {
+                color: #FFD700;
+                border-color: #FFD700;
+            }
+
+            .action-card.rellenar .action-card-button:hover {
+                background: #FFD700;
+                color: #0F2027;
+                box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+            }
+
+            .action-card.salir .action-card-button {
+                color: #FF6B6B;
+                border-color: #FF6B6B;
+            }
+
+            .action-card.salir .action-card-button:hover {
+                background: #FF6B6B;
+                color: white;
+                box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+            }
+
+            .alert {
+                border-radius: 12px;
+                backdrop-filter: blur(10px);
+                border: 1px solid;
+                animation: slideDown 0.4s ease-out;
+            }
+
+            .alert-success {
+                background: rgba(0, 255, 136, 0.15);
+                border-color: rgba(0, 255, 136, 0.3);
+                color: #00FF88;
+            }
+
+            .alert-danger {
+                background: rgba(255, 107, 107, 0.15);
+                border-color: rgba(255, 107, 107, 0.3);
+                color: #FF6B6B;
+            }
+
+            @media (max-width: 768px) {
+                .user-card {
+                    padding: 30px 20px;
+                }
+
+                .user-info {
+                    flex-direction: column;
+                    gap: 20px;
+                }
+
+                .action-card {
+                    max-width: 100%;
+                }
+            }
+        </style>
+
+        <div class="hero-section">
+            <div class="container-xxl">
+                <div class="user-card">
+                    <div th:if="${mensaje}"
+                         th:class="${'alert alert-' + (tipo == 'success' ? 'success' : 'danger') + ' alert-dismissible fade show'}"
+                         role="alert">
+                        <i th:class="${'fas ' + (tipo == 'success' ? 'fa-check-circle' : 'fa-exclamation-circle') + ' me-2'}"></i>
+                        <span th:text="${mensaje}"></span>
+                        <button type="button" class="btn-close" data-mdb-dismiss="alert"></button>
+                    </div>
+
+                    <h4>¡Bienvenido!</h4>
+                    <p>Has ingresado al sistema correctamente</p>
+                    <p>Selecciona la acción que deseas realizar</p>
+
+                    <div class="user-info">
+                        <div class="user-info-item">
+                            <strong>Usuario</strong>
+                            <span th:text="${usuario.nombre}">Usuario</span>
+                        </div>
+                        <div class="user-info-item">
+                            <strong>Cuenta</strong>
+                            <span th:text="${usuario.cuenta}">0000</span>
+                        </div>
+                        <div class="user-info-item">
+                            <strong>Saldo Disponible</strong>
+                            <span>$<span th:text="${usuario.saldo}">15000</span></span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row justify-content-center">
+                <div class="action-cards-container">
+                    <div class="action-card retiro">
+                        <div class="action-card-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="action-card-title">Retiro</div>
+                        <div class="action-card-description">
+                            Retira efectivo de manera rápida y segura desde cualquiera de nuestros cajeros automáticos
+                        </div>
+                        <a th:href="@{/usuario/retiro}" class="action-card-button">
+                            <i class="fas fa-arrow-right me-2"></i>Retirar Ahora
+                        </a>
+                    </div>
 
-                <div class="col-md-4 mb-4">
-                    <div class="card text-center">
-                        <div class="card-header fw-bold text-white" style="background-color:#005EB8;">
-                            RETIRO
+                    <div class="action-card rellenar" th:if="${usuario.rol != null && usuario.rol.idRol == 1}">
+                        <div class="action-card-icon">
+                            <i class="fas fa-plus-circle"></i>
                         </div>
-                        <div class="card-body">
-                            <p class="fs-6">Retirar efectivo del cajero</p>
-                            <a th:href="@{/usuario/retiro}"
-                               class="btn btn-outline-secondary">
-                                Retirar
-                            </a>
+                        <div class="action-card-title">Rellenar</div>
+                        <div class="action-card-description">
+                            Recarga el efectivo de los cajeros. 
                         </div>
+                        <a th:href="@{/usuario/rellenar}" class="action-card-button">
+                            <i class="fas fa-tools me-2"></i>Rellenar
+                        </a>
+                    </div>
+
+                    <div class="action-card salir">
+                        <div class="action-card-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <div class="action-card-title">Cerrar Sesión</div>
+                        <div class="action-card-description">
+                            Finaliza tu sesión de manera segura.
+                        </div>
+                        <a th:href="@{/logout}" class="action-card-button">
+                            <i class="fas fa-power-off me-2"></i>Salir
+                        </a>
                     </div>
                 </div>
-
-                <div class="col-md-4 mb-4" th:if="${usuario.rol != null && usuario.rol.idRol == 1}">
-                    <div class="card text-center">
-                        <div class="card-header fw-bold text-white" style="background-color:#AF9800;">
-                            RELLENAR
-                        </div>
-                        <div class="card-body">
-                            <p class="fs-6">Rellenar cajero (Admin)</p>
-                            <a th:href="@{/usuario/rellenar}"
-                               class="btn btn-outline-warning">
-                                Rellenar
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-4">
-                    <div class="card text-center">
-                        <div class="card-header fw-bold text-white" style="background-color:#DC3545;">
-                            SALIR
-                        </div>
-                        <div class="card-body">
-                            <p class="fs-6">Cerrar Sesión</p>
-                            <a th:href="@{/logout}"
-                               class="btn btn-outline-danger">
-                                Salir
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>  
