@@ -7,23 +7,150 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
         <style>
+            :root {
+                --color-card-background: rgba(39, 39, 39, 0.85);
+                --color-card-shade: rgba(57, 57, 57, 0.85);
+                --color-card-light-gray: rgba(255, 255, 255, 0.6);
+                --color-primary: #00D4FF;
+                --color-secondary: #00FF88;
+                --color-accent: #FF6B6B;
+            }
+
+            body {
+                min-height: 100vh;
+                background: linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%);
+                font-family: 'Roboto', sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+
+            .navbar-custom {
+                background: linear-gradient(135deg, var(--color-card-shade), var(--color-card-background));
+                backdrop-filter: blur(150px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+                padding: 15px 0;
+            }
+
+            .navbar-brand {
+                font-weight: 700;
+                font-size: 24px;
+                letter-spacing: 2px;
+                background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                text-transform: uppercase;
+            }
+
+            .nav-link {
+                color: rgba(255, 255, 255, 0.8) !important;
+                font-weight: 500;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                padding: 10px 20px !important;
+                margin: 0 5px;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+                position: relative;
+            }
+
+            .nav-link::before {
+                content: '';
+                position: absolute;
+                bottom: 5px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 2px;
+                background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+                transition: width 0.3s ease;
+            }
+
+            .nav-link:hover {
+                color: white !important;
+                background: rgba(255, 255, 255, 0.05);
+            }
+
+            .nav-link:hover::before {
+                width: 80%;
+            }
+
+            .dropdown-toggle::after {
+                margin-left: 8px;
+            }
+
+            .dropdown-menu {
+                background: linear-gradient(135deg, var(--color-card-shade), var(--color-card-background));
+                backdrop-filter: blur(150px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+                border-radius: 12px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+
+            .dropdown-item {
+                color: rgba(255, 255, 255, 0.8);
+                border-radius: 8px;
+                padding: 10px 20px;
+                transition: all 0.3s ease;
+                font-size: 14px;
+            }
+
+            .dropdown-item:hover {
+                background: rgba(255, 255, 255, 0.1);
+                color: white;
+            }
+
+            .navbar-toggler {
+                border-color: rgba(255, 255, 255, 0.3);
+            }
+
+            .navbar-toggler-icon {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+            }
+
+            main {
+                min-height: calc(100vh - 80px);
+                padding: 0;
+            }
+
             .btn,
             .nav-link,
             .dropdown-item {
                 cursor: pointer;
             }
 
+            ::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+                border-radius: 10px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+            }
         </style>
     </head>
 
     <body>
         <!-- NAVBAR -->
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#7bd1ff;">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
             <div class="container-fluid">
-                <a class="navbar-brand fw-bold" th:href="@{/usuario}">Banco</a>
+                <a class="navbar-brand" th:href="@{/usuario}">
+                    <i class="fas fa-university me-2"></i>Banco 
+                </a>
 
                 <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
                         data-mdb-target="#navbarSupportedContent">
@@ -33,13 +160,19 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/usuario}">Inicio</a>
+                            <a class="nav-link" th:href="@{/usuario}">
+                                <i class="fas fa-home me-1"></i>Inicio
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/usuario/retiro}">Retiro</a>
+                            <a class="nav-link" th:href="@{/usuario/retiro}">
+                                <i class="fas fa-money-bill-wave me-1"></i>Retiro
+                            </a>
                         </li>
                         <li class="nav-item" th:if="${session.usuario != null && session.usuario.rol != null && session.usuario.rol.idRol == 1}">
-                            <a class="nav-link" th:href="@{/usuario/rellenar}">Rellenar</a>
+                            <a class="nav-link" th:href="@{/usuario/rellenar}">
+                                <i class="fas fa-plus-circle me-1"></i>Rellenar
+                            </a>
                         </li>
                     </ul>
 
@@ -47,11 +180,13 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
                                data-mdb-toggle="dropdown">
-                                Opciones
+                                <i class="fas fa-user-circle me-1"></i>Opciones
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a class="dropdown-item" th:href="@{/logout}">Cerrar sesión</a>
+                                    <a class="dropdown-item" th:href="@{/logout}">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión
+                                    </a>
                                 </li>
                             </ul>
                         </li>
