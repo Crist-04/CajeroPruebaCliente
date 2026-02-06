@@ -322,6 +322,11 @@
                             </h3>
                         </div>
 
+                        <div class="alert alert-warning mb-4">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Importante</strong> La cantidad debe ser multiplo de 5
+                        </div>
+
                         <form method="post" th:action="@{/usuario/rellenar}">
                             <div class="form-group">
                                 <label class="form-label-custom">Seleccionar Cajero</label>
@@ -369,5 +374,74 @@
                 </div>
             </div>
         </div>
-    </body>
+
+    <th:block layout:fragment="extra-scripts">
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const cantidadInput = document.getElementById('cantidadInput');
+                const validationMessage = document.getElementById('validationMessage');
+                const submitBtn = document.getElementById('submitBtn');
+                const form = document.getElementById('rellenarForm');
+
+                cantidadInput.addEventListener('input', function () {
+                    const value = parseInt(this.value);
+
+                    if (isNaN(value) || value <= 0) {
+                        this.classList.remove('invalid');
+                        validationMessage.classList.remove('show');
+                        submitBtn.disabled = false;
+                        return;
+                    }
+
+                    if (value % 5 !== 0) {
+                        this.classList.add('invalid');
+                        validationMessage.classList.add('show');
+                        submitBtn.disabled = true;
+                    } else {
+                        this.classList.remove('invalid');
+                        validationMessage.classList.remove('show');
+                        submitBtn.disabled = false;
+                    }
+                });
+
+                form.addEventListener('submit', function (e) {
+                    const value = parseInt(cantidadInput.value);
+
+                    if (isNaN(value) || value <= 0) {
+                        e.preventDefault();
+                        alert('Por favor, ingresa una cantidad válida');
+                        return false;
+                    }
+
+                    if (value % 5 !== 0) {
+                        e.preventDefault();
+                        cantidadInput.classList.add('invalid');
+                        validationMessage.classList.add('show');
+                        alert('La cantidad debe ser un múltiplo de 5');
+                        return false;
+                    }
+
+                    return true;
+                });
+
+                cantidadInput.addEventListener('keydown', function (e) {
+                    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        let value = parseInt(this.value) || 0;
+
+                        if (e.key === 'ArrowUp') {
+                            value = Math.ceil((value + 1) / 5) * 5;
+                        } else {
+                            value = Math.max(0, Math.floor((value - 1) / 5) * 5);
+                        }
+
+                        this.value = value;
+                        this.dispatchEvent(new Event('input'));
+                    }
+                });
+            });
+        </script>
+    </th:block>
+
+</body>
 </html>

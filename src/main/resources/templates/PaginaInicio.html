@@ -158,16 +158,16 @@
                 }
             }
 
+            .action-card {
+                overflow: hidden; 
+            }
+
             .action-card::before {
-                content: '';
-                position: absolute;
-                top: -50%;
-                right: -50%;
-                width: 200%;
-                height: 200%;
-                background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
-                opacity: 0;
-                transition: opacity 0.4s ease;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                pointer-events: none; 
             }
 
             .action-card:hover::before {
@@ -354,7 +354,7 @@
                         <button type="button" class="btn-close" data-mdb-dismiss="alert"></button>
                     </div>
 
-                    <h4>¡Bienvenido!</h4>
+                    <h4>¡Bienvenid@!</h4>
                     <p>Has ingresado al sistema correctamente</p>
                     <p>Selecciona la acción que deseas realizar</p>
 

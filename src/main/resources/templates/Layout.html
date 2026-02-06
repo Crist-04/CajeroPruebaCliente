@@ -79,11 +79,30 @@
                 width: 80%;
             }
 
+            .dropdown {
+                position: relative;
+            }
+
+            .dropdown-toggle {
+                cursor: pointer;
+                user-select: none;
+            }
+
             .dropdown-toggle::after {
                 margin-left: 8px;
+                content: '▼';
+                font-size: 10px;
+                transition: transform 0.3s ease;
+            }
+
+            .dropdown.show .dropdown-toggle::after {
+                transform: rotate(180deg);
             }
 
             .dropdown-menu {
+                position: absolute;
+                top: 100%;
+                right: 0;
                 background: linear-gradient(135deg, var(--color-card-shade), var(--color-card-background));
                 backdrop-filter: blur(150px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
@@ -91,6 +110,18 @@
                 border-radius: 12px;
                 padding: 10px;
                 margin-top: 10px;
+                min-width: 200px;
+                display: none;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: all 0.3s ease;
+                z-index: 1000;
+            }
+
+            .dropdown.show .dropdown-menu {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
             }
 
             .dropdown-item {
@@ -99,6 +130,9 @@
                 padding: 10px 20px;
                 transition: all 0.3s ease;
                 font-size: 14px;
+                display: block;
+                text-decoration: none;
+                cursor: pointer;
             }
 
             .dropdown-item:hover {
@@ -141,6 +175,23 @@
             ::-webkit-scrollbar-thumb:hover {
                 background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
             }
+
+            @media (max-width: 991px) {
+                .navbar-collapse {
+                    background: linear-gradient(135deg, var(--color-card-shade), var(--color-card-background));
+                    padding: 20px;
+                    border-radius: 12px;
+                    margin-top: 15px;
+                }
+
+                .dropdown-menu {
+                    position: static;
+                    box-shadow: none;
+                    border: none;
+                    margin-top: 5px;
+                    margin-left: 20px;
+                }
+            }
         </style>
     </head>
 
@@ -152,8 +203,7 @@
                     <i class="fas fa-university me-2"></i>Banco 
                 </a>
 
-                <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-                        data-mdb-target="#navbarSupportedContent">
+                <button class="navbar-toggler" type="button" id="navbarToggler">
                     <i class="fas fa-bars"></i>
                 </button>
 
@@ -177,12 +227,11 @@
                     </ul>
 
                     <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button"
-                               data-mdb-toggle="dropdown">
+                        <li class="nav-item dropdown" id="userDropdown">
+                            <a class="nav-link dropdown-toggle" id="dropdownToggle">
                                 <i class="fas fa-user-circle me-1"></i>Opciones
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
+                            <ul class="dropdown-menu">
                                 <li>
                                     <a class="dropdown-item" th:href="@{/logout}">
                                         <i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión
@@ -201,10 +250,43 @@
             </div>
         </main>
 
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.js"></script>
 
-    <th:block layout:fragment="extra-scripts"></th:block>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const dropdown = document.getElementById('userDropdown');
+                const dropdownToggle = document.getElementById('dropdownToggle');
 
-</body>
+                if (dropdown && dropdownToggle) {
+                    dropdownToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropdown.classList.toggle('show');
+                    });
+
+                    document.addEventListener('click', function(e) {
+                        if (!dropdown.contains(e.target)) {
+                            dropdown.classList.remove('show');
+                        }
+                    });
+
+                    dropdown.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                    });
+                }
+
+                const navbarToggler = document.getElementById('navbarToggler');
+                const navbarCollapse = document.getElementById('navbarSupportedContent');
+
+                if (navbarToggler && navbarCollapse) {
+                    navbarToggler.addEventListener('click', function() {
+                        navbarCollapse.classList.toggle('show');
+                    });
+                }
+            });
+        </script>
+
+        <th:block layout:fragment="extra-scripts"></th:block>
+
+    </body>
 </html>
