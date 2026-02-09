@@ -190,6 +190,12 @@
                     color: rgba(255, 255, 255, 0.3);
                 }
 
+                /* Estilos para input inválido */
+                .form-input-custom.invalid {
+                    border-color: #FF6B6B;
+                    box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+                }
+
                 .btn-submit {
                     width: 100%;
                     padding: 16px;
@@ -207,13 +213,18 @@
                     margin-bottom: 15px;
                 }
 
-                .btn-submit:hover {
+                .btn-submit:hover:not(:disabled) {
                     transform: translateY(-2px);
                     box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
                 }
 
                 .btn-submit:active {
                     transform: translateY(0);
+                }
+
+                .btn-submit:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
                 }
 
                 .btn-back {
@@ -260,6 +271,12 @@
                     color: #FF6B6B;
                 }
 
+                .alert-warning {
+                    background: rgba(255, 215, 0, 0.15);
+                    border-color: rgba(255, 215, 0, 0.3);
+                    color: #FFD700;
+                }
+
                 .info-icon {
                     display: inline-flex;
                     align-items: center;
@@ -271,6 +288,36 @@
                     color: #FFD700;
                     font-size: 12px;
                     margin-right: 8px;
+                }
+
+                .validation-message {
+                    color: #FF6B6B;
+                    font-size: 12px;
+                    margin-top: 8px;
+                    display: none;
+                    animation: fadeIn 0.3s ease-out;
+                }
+
+                .validation-message.show {
+                    display: block;
+                }
+
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(-5px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                .help-text {
+                    color: rgba(255, 255, 255, 0.4);
+                    font-size: 12px;
+                    margin-top: 8px;
+                    font-style: italic;
                 }
 
                 @media (max-width: 768px) {
@@ -324,10 +371,10 @@
 
                         <div class="alert alert-warning mb-4">
                             <i class="fas fa-exclamation-triangle me-2"></i>
-                            <strong>Importante</strong> La cantidad debe ser multiplo de 5
+                            <strong>Importante:</strong> La cantidad debe ser un múltiplo de 5
                         </div>
 
-                        <form method="post" th:action="@{/usuario/rellenar}">
+                        <form method="post" th:action="@{/usuario/rellenar}" id="rellenarForm">
                             <div class="form-group">
                                 <label class="form-label-custom">Seleccionar Cajero</label>
                                 <select name="idCajero" class="form-select-custom" required>
@@ -356,13 +403,23 @@
                                 <label class="form-label-custom">Cantidad a Agregar</label>
                                 <input type="number" 
                                        name="cantidad" 
+                                       id="cantidadInput"
                                        class="form-input-custom" 
                                        required 
-                                       min="1"
-                                       placeholder="Ingresa la cantidad de billetes"/>
+                                       min="5"
+                                       step="5"
+                                       placeholder="Ej: 5, 10, 15, 20..."/>
+                                <div class="help-text">
+                                    <i class="fas fa-lightbulb me-1"></i>
+                                    Solo se permiten múltiplos de 5
+                                </div>
+                                <div class="validation-message" id="validationMessage">
+                                    <i class="fas fa-times-circle me-1"></i>
+                                    La cantidad debe ser un múltiplo de 5
+                                </div>
                             </div>
 
-                            <button type="submit" class="btn-submit">
+                            <button type="submit" class="btn-submit" id="submitBtn">
                                 <i class="fas fa-check-circle me-2"></i>Confirmar Recarga
                             </button>
 
@@ -442,6 +499,5 @@
             });
         </script>
     </th:block>
-
 </body>
 </html>
